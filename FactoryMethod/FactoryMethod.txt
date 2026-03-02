@@ -1,0 +1,28 @@
+O padrão **Factory Method** é um padrão de projeto criacional que tem como objetivo delegar a responsabilidade de criação de objetos para subclasses,
+promovendo baixo acoplamento e maior flexibilidade no sistema.
+Em vez de instanciar objetos diretamente com o uso do operador `new`, o código cliente utiliza um método fábrica responsável por decidir qual objeto concreto será criado.
+
+Esse padrão é útil quando o sistema precisa ser aberto para extensão, mas fechado para modificação, seguindo o princípio Open/Closed do SOLID.
+Assim, é possível adicionar novos tipos de objetos sem alterar o código já existente, apenas criando novas subclasses.
+
+A estrutura do Factory Method é composta por quatro elementos principais:
+
+Primeiro, o Produto Abstrato, que define a interface comum para os objetos que serão criados. Ele declara os métodos que todas as implementações concretas devem possuir.
+
+Segundo, os Produtos Concretos, que implementam a interface do produto abstrato. Cada classe concreta representa uma variação específica do objeto a ser criado.
+
+Terceiro, a Classe Criadora (Creator), que declara o método fábrica. Esse método geralmente é abstrato e será responsável por retornar um objeto do tipo Produto.
+Além disso, essa classe pode conter métodos concretos que utilizam o produto criado.
+
+Por fim, temos as Classes Criadoras Concretas, que estendem a classe criadora e implementam o método fábrica, definindo qual produto concreto será instanciado.
+
+Para implementar o Factory Method, o primeiro passo é identificar qual objeto varia no sistema.
+Em seguida, cria-se uma interface ou classe abstrata representando esse objeto. Depois, implementam-se as variações concretas.
+Em seguida, define-se uma classe criadora com um método abstrato responsável por criar o objeto.
+Por fim, criam-se subclasses da classe criadora que retornam as implementações concretas desejadas.
+
+A principal vantagem do padrão é o desacoplamento entre a criação e o uso dos objetos. O código cliente trabalha com abstrações e não depende das classes concretas.
+Isso facilita manutenção, testes e evolução do sistema.
+
+Em resumo, o Factory Method encapsula a lógica de criação de objetos, permitindo que o sistema seja mais flexível, extensível e organizado,
+especialmente em cenários onde novos tipos de objetos podem surgir com o tempo.
