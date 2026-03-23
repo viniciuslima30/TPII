@@ -1,83 +1,95 @@
-// Criar Singleton
+// SINGLETON
 
-class GerenciadorAlunos {
+class RegistroAcademicoCentral {
     constructor() {
-        if (GerenciadorAlunos.instance) {
-            return GerenciadorAlunos.instance;
-        }
-    
-        this.alunos = [];
-        GerenciadorAlunos.instance = this;
-    }
-        adicionarAluno(aluno) {
-            this.alunos.push(aluno);
+        if (RegistroAcademicoCentral.instance) {
+            return RegistroAcademicoCentral.instance;
         }
 
-        listarAlunos() {
-            console.log("LISTA DE ALUNOS:");
-            this.alunos.forEach((index, aluno) => {
-                console.log(
-                    `
-                    Valor: ${index + 1},
-                    Nome: ${aluno.nome},
-                    Idade: ${aluno.idade},
-                    Curso: ${aluno.curso},
-                    Período: ${aluno.periodo}
-                    `
-                )
-            });
-        }
-    
+        this.value = 0;
+        RegistroAcademicoCentral.instance = this;
+    }
+
+    increment() {
+        this.value++;
+        console.log(`Value: ${this.value}`);
+    }
 }
 
-// Prototype
+// PROTOTYPE
 
 class Aluno {
-    constructor(nome, idade, curso, periodo) {
+    constructor(nome, idade, curso, unidade, periodo) {
         this.nome = nome;
         this.idade = idade;
         this.curso = curso;
-        this.periodo = periodo;        
+        this.unidade = unidade;
+        this.periodo = periodo;
     }
 
     clone() {
-        return new Aluno(this.nome, this.idade, this.curso, this.periodo);
+        return new Aluno(
+            this.nome,
+            this.idade,
+            this.curso,
+            this.unidade,
+            this.periodo
+        );
     }
-
 }
 
-// 1. Validar Singleton
-const siga1 = new GerenciadorAlunos();
-const siga2 = new GerenciadorAlunos();
+// GERENCIAMENTO
+
+class GerenciarAlunos {
+    constructor() {
+        this.alunos = [];
+    }
+
+    // adiciona aluno já pronto
+    addAluno(aluno) {
+        this.alunos.push(aluno);
+    }
+
+    // cria aluno a partir de um protótipo
+    addAlunoFromPrototype(prototipo, nome, idade) {
+        const aluno = prototipo.clone();
+        aluno.nome = nome;
+        aluno.idade = idade;
+        this.alunos.push(aluno);
+    }
+
+    listarAlunos() {
+        console.log(this.alunos);
+    }
+}
+
+// CLIENTE
+
+// Singleton
+const siga1 = new RegistroAcademicoCentral();
+const siga2 = new RegistroAcademicoCentral();
 
 console.log("Singleton funciona?", siga1 === siga2); // true
 
-// 2. Criar um protótipo de aluno
+// Protótipo base
 const alunoPrototipo = new Aluno(
-  null,
-  null,
-  "Análise e Desenvolvimento de Sistemas",
-  "Noturno"
+    null,
+    null,
+    "Desenvolvimento de Software Multiplataforma",
+    "FATEC Luigi Papaiz",
+    "Noturno"
 );
 
-// 3. Criar clones e personalizar
-const aluno1 = alunoPrototipo.clone();
-aluno1.nome = "João";
-aluno1.idade = 20;
-console.log(aluno1);
+// Gerenciador
+const gerenciador = new GerenciarAlunos();
 
-const aluno2 = alunoPrototipo.clone();
-aluno2.nome = "Maria";
-aluno2.idade = 22;
-console.log(aluno2);
+// Criando alunos a partir do protótipo
+gerenciador.addAlunoFromPrototype(alunoPrototipo, "João", 20);
+gerenciador.addAlunoFromPrototype(alunoPrototipo, "Maria", 22);
 
-// 4. Adicionar ao Gerenciador Singleton
-siga1.adicionarAluno(aluno1);
-siga1.adicionarAluno(aluno2);
+// Listando alunos
+gerenciador.listarAlunos();
 
-// 5. Listar alunos
-siga1.listarAlunos();
-
-// 6. Verificar que o protótipo não foi alterado
-console.log("\nProtótipo original:");
-console.log(alunoPrototipo);
+// Testando clone original
+console.log("CLONE ORIGINAL:");
+console.log(alunoPrototipo.clone());
